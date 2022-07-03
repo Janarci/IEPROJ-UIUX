@@ -159,55 +159,11 @@ public class PlayerMovement : MonoBehaviour
         {
             if ((Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow)))
             {
-                // (x, -y)
-                PlayerSprite.GetComponent<Transform>().rotation = new Quaternion(
-                    InitialRotation.x,
-                    -InitialRotation.y,
-                    InitialRotation.z,
-                    InitialRotation.w
-                    );
-                /*
-                if (!IsHoldingDodge)
-                {
-                    IsHoldingDodge = true;
-                }
-                else
-                {
-                    playerAnimator.SetBool("Dodge", false);
-                }*/
-
-                if (index > 0)
-                {
-                    index--;
-                    playerAnimator.StopPlayback();
-                    playerAnimator.SetBool("Dodge", true);
-                }
+                InputLeft();
             }
             else if ((Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)))
             {
-                //(-x, y)
-                PlayerSprite.GetComponent<Transform>().rotation = new Quaternion(
-                   -InitialRotation.x,
-                   InitialRotation.y,
-                   InitialRotation.z,
-                   InitialRotation.w
-                   );
-                /*
-                if (!IsHoldingDodge)
-                {
-                    
-                    IsHoldingDodge = true;
-                }
-                else
-                {
-                    playerAnimator.SetBool("Dodge", false);
-                }*/
-                if (index < planes.Count - 1)
-                {
-                    index++;
-                    playerAnimator.StopPlayback();
-                    playerAnimator.SetBool("Dodge", true);
-                }  
+                InputRight();
             }
             else
             {
@@ -222,9 +178,7 @@ public class PlayerMovement : MonoBehaviour
 
             if ((Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.Space)) && !isInAir)
             {
-                transform.position = transform.position + new Vector3(0, jumpHeight, 0);
-                isInAir = true;
-                JUMP_INTERVAL = jumpClip.length - JumpOffset;
+                InputUp();
             }
             
             jumpAndFalling();
@@ -252,4 +206,65 @@ public class PlayerMovement : MonoBehaviour
     }
 
     public List<Transform> GetPlanes { get { return planes; } }
+
+    public void InputUp()
+    {
+        transform.position = transform.position + new Vector3(0, jumpHeight, 0);
+        isInAir = true;
+        JUMP_INTERVAL = jumpClip.length - JumpOffset;
+    }
+
+    public void InputLeft()
+    {
+        // (x, -y)
+        PlayerSprite.GetComponent<Transform>().rotation = new Quaternion(
+            InitialRotation.x,
+            -InitialRotation.y,
+            InitialRotation.z,
+            InitialRotation.w
+            );
+        /*
+        if (!IsHoldingDodge)
+        {
+            IsHoldingDodge = true;
+        }
+        else
+        {
+            playerAnimator.SetBool("Dodge", false);
+        }*/
+
+        if (index > 0)
+        {
+            index--;
+            playerAnimator.StopPlayback();
+            playerAnimator.SetBool("Dodge", true);
+        }
+    }
+
+    public void InputRight()
+    {
+        //(-x, y)
+        PlayerSprite.GetComponent<Transform>().rotation = new Quaternion(
+           -InitialRotation.x,
+           InitialRotation.y,
+           InitialRotation.z,
+           InitialRotation.w
+           );
+        /*
+        if (!IsHoldingDodge)
+        {
+
+            IsHoldingDodge = true;
+        }
+        else
+        {
+            playerAnimator.SetBool("Dodge", false);
+        }*/
+        if (index < planes.Count - 1)
+        {
+            index++;
+            playerAnimator.StopPlayback();
+            playerAnimator.SetBool("Dodge", true);
+        }
+    }
 }

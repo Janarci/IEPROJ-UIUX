@@ -89,58 +89,11 @@ public class PlayerController : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
             {
-                PlayerSprite.GetComponent<Transform>().rotation = new Quaternion(
-                    InitialRotation.x,
-                    -InitialRotation.y,
-                    InitialRotation.z,
-                    InitialRotation.w
-                    );
-                /*
-                if (!IsHoldingDodge)
-                {
-                    playerAnimator.StopPlayback();
-                    playerAnimator.SetBool("Dodge", true);
-                    IsHoldingDodge = true;
-                }
-                else
-                {
-                    playerAnimator.SetBool("Dodge", false);
-                }*/
-
-                if (index > 0)
-                {
-                    index--;
-                    playerAnimator.StopPlayback();
-                    playerAnimator.SetBool("Dodge", true);
-                }
+                InputLeft();
             }
             else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
             {
-                PlayerSprite.GetComponent<Transform>().rotation = new Quaternion(
-                   -InitialRotation.x,
-                   InitialRotation.y,
-                   InitialRotation.z,
-                   InitialRotation.w
-                   );
-                /*
-                if (!IsHoldingDodge)
-                {
-                    playerAnimator.StopPlayback();
-                    playerAnimator.SetBool("Dodge", true);
-                    IsHoldingDodge = true;
-                }
-                else
-                {
-                    playerAnimator.SetBool("Dodge", false);
-                }*/
-
-                if (index < planes.Count - 1)
-                {
-                    index++;
-                    playerAnimator.StopPlayback();
-                    playerAnimator.SetBool("Dodge", true);
-                }
-
+                InputRight();
             }
             else
             {
@@ -153,9 +106,7 @@ public class PlayerController : MonoBehaviour
             Jump();
             if ((Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)) && !isInAir)
             {
-                transform.position = transform.position + new Vector3(0, jumpHeight, 0);
-                isInAir = true;
-                JUMP_INTERVAL = jumpClip.length - JumpOffset;
+                InputUp();
             }
             Debug.Log("Current lane index: " + index);
             transform.position = new Vector3(this.transform.position.x, this.transform.position.y, planes[index].position.z);
@@ -229,5 +180,68 @@ public class PlayerController : MonoBehaviour
     {
         get { return collectedAttackNotes; }
         set { collectedAttackNotes = value; }
+    }
+
+    public void InputUp()
+    {
+        transform.position = transform.position + new Vector3(0, jumpHeight, 0);
+        isInAir = true;
+        JUMP_INTERVAL = jumpClip.length - JumpOffset;
+    }
+
+    public void InputLeft()
+    {
+        PlayerSprite.GetComponent<Transform>().rotation = new Quaternion(
+                    InitialRotation.x,
+                    -InitialRotation.y,
+                    InitialRotation.z,
+                    InitialRotation.w
+                    );
+        /*
+        if (!IsHoldingDodge)
+        {
+            playerAnimator.StopPlayback();
+            playerAnimator.SetBool("Dodge", true);
+            IsHoldingDodge = true;
+        }
+        else
+        {
+            playerAnimator.SetBool("Dodge", false);
+        }*/
+
+        if (index > 0)
+        {
+            index--;
+            playerAnimator.StopPlayback();
+            playerAnimator.SetBool("Dodge", true);
+        }
+    }
+
+    public void InputRight()
+    {
+        PlayerSprite.GetComponent<Transform>().rotation = new Quaternion(
+                   -InitialRotation.x,
+                   InitialRotation.y,
+                   InitialRotation.z,
+                   InitialRotation.w
+                   );
+        /*
+        if (!IsHoldingDodge)
+        {
+            playerAnimator.StopPlayback();
+            playerAnimator.SetBool("Dodge", true);
+            IsHoldingDodge = true;
+        }
+        else
+        {
+            playerAnimator.SetBool("Dodge", false);
+        }*/
+
+        if (index < planes.Count - 1)
+        {
+            index++;
+            playerAnimator.StopPlayback();
+            playerAnimator.SetBool("Dodge", true);
+        }
     }
 }

@@ -43,6 +43,13 @@ public class MainMenu : MonoBehaviour
 	    }
     }
 
+    public void CloseOpeningScreen()
+    {
+        SpacePress = true;
+        image.CrossFadeColor(Color.black, ticks, true, true);
+        StartCoroutine(deactivate(ticks));
+    }
+
     public IEnumerator deactivate(float t)
     {
 	    yield return new WaitForSeconds(t);
